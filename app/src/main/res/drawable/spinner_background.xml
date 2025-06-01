@@ -1,0 +1,8 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/white"/> <!-- Nền trắng -->
+    <corners android:radius="20dp"/>      <!-- Bo tròn -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/lavender"/> <!-- Viền màu lavender -->
+</shape>

@@ -56,6 +56,19 @@
                 android:drawableLeft="@drawable/baseline_password_24"
                 android:drawablePadding="8dp"
                 android:background="@drawable/edittext_bkg"/>
+
+            <Spinner
+                android:id="@+id/my_spinner"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:spinnerMode="dropdown"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/spinner_background"
+                android:popupBackground="@drawable/spinner_popup_background">
+
+            </Spinner>
+
             <Button
                 android:layout_width="300dp"
                 android:layout_height="70dp"
