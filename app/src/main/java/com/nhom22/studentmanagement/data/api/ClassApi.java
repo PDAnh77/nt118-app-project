@@ -1,5 +1,7 @@
 package com.nhom22.studentmanagement.data.api;
 
+import com.nhom22.studentmanagement.data.model.Class;
+
 import java.util.List;
 
 import retrofit2.Call;

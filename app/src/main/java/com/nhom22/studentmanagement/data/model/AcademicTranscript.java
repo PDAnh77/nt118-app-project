@@ -1,18 +1,18 @@
 package com.nhom22.studentmanagement.data.model;
 
-public class AcademicTranscripts {
+public class AcademicTranscript {
     private String id;
     private String studentId;
     private String classId;
     private Grade grade;
 
-    public AcademicTranscripts(String studentId, String classId, Grade grade) {
+    public AcademicTranscript(String studentId, String classId, Grade grade) {
         this.studentId = studentId;
         this.classId = classId;
         this.grade = grade;
     }
 
-    public AcademicTranscripts(AcademicTranscripts other) {
+    public AcademicTranscript(AcademicTranscript other) {
         this.id = other.getId();
         this.studentId = other.getStudentId();
         this.classId = other.getClassId();
