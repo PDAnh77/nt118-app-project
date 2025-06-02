@@ -19,17 +19,13 @@ public class User {
     }
 
     public User(User currentUser) {
-        this.id = currentUser.get_id();
+        this.id = currentUser.getId();
         this.username = currentUser.getUsername();
         this.password = currentUser.getPassword();
         this.role = currentUser.getRole();
         this.fullname = currentUser.getFullname();
         this.brithday = currentUser.getBrithday();
         this.academicYear = currentUser.getAcademicYear();
-    }
-
-    public User getUser() {
-        return new User(this);
     }
 
     // Constructor cho đăng ký
@@ -63,6 +59,6 @@ public class User {
     public Integer getAcademicYear() { return academicYear; }
     public void setAcademicYear(Integer academicYear) { this.academicYear = academicYear; }
 
-    public String get_id() { return id; }
-    public void set_id(String id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 }
