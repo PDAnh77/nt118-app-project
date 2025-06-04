@@ -23,7 +23,7 @@ public interface AcademicTranscriptApi {
     Call<List<AcademicTranscript>> getAcademicTranscriptsByStudentId(@Path("studentId") String studentId);
     @GET("grades/student/{studentId}/class/{identifier}")
     Call<AcademicTranscript> getAcademicTranscriptByStudentIdAndClassIdentifier(@Path("studentId") String studentId, @Path("identifier") String classIdentifier);
-    @POST("grade")
+    @POST("grades")
     Call<AcademicTranscript> createAcademicTranscript(@Body AcademicTranscript newTranscript);
     @PUT("grades/{id}")
     Call<AcademicTranscript> updateAcademicTranscript(@Path("id") String transcriptId, @Body AcademicTranscript updatedTranscript);

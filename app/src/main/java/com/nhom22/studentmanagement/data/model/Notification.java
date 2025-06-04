@@ -1,6 +1,9 @@
 package com.nhom22.studentmanagement.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Notification {
+    @SerializedName("_id")
     private String id;
     private String studentId;
     private String classId;

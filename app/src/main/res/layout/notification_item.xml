@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/notification_card_bg"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Username + Message -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvUsername"
+                android:text="Username"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvMessage"
+                android:text="Sent you a request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <!-- Nút Accept -->
+        <ImageButton
+            android:id="@+id/btnAccept"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/notification_circle_green"
+            android:src="@drawable/check"
+            android:contentDescription="Accept"
+            android:layout_marginStart="8dp" />
+
+        <!-- Nút Reject -->
+        <ImageButton
+            android:id="@+id/btnReject"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/notification_circle_red"
+            android:src="@drawable/close"
+            android:contentDescription="Reject"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+</LinearLayout>
