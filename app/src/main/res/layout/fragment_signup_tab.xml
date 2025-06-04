@@ -25,10 +25,10 @@
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
-                android:id="@+id/signup_email"
+                android:id="@+id/signup_username"
                 android:layout_marginTop="30dp"
                 android:padding="8dp"
-                android:hint="Email"
+                android:hint="Tên đăng nhập"
                 android:drawableLeft="@drawable/baseline_person_24"
                 android:drawablePadding="8dp"
                 android:background="@drawable/edittext_bkg"/>
@@ -39,7 +39,7 @@
                 android:id="@+id/signup_password"
                 android:layout_marginTop="20dp"
                 android:padding="8dp"
-                android:hint="Password"
+                android:hint="Mật khẩu"
                 android:inputType="textPassword"
                 android:drawableLeft="@drawable/baseline_lock_24"
                 android:drawablePadding="8dp"
@@ -51,7 +51,7 @@
                 android:id="@+id/signup_confirm"
                 android:layout_marginTop="20dp"
                 android:padding="8dp"
-                android:hint="Confirm Password"
+                android:hint="Nhập lại mật khẩu"
                 android:inputType="textPassword"
                 android:drawableLeft="@drawable/baseline_password_24"
                 android:drawablePadding="8dp"
@@ -76,7 +76,7 @@
                 android:layout_marginTop="30dp"
                 android:id="@+id/signup_button"
                 android:textSize="18sp"
-                android:text="Signup"
+                android:text="Đăng ký"
                 app:cornerRadius = "30dp"/>
         </LinearLayout>
     </LinearLayout>

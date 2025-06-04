@@ -1,5 +1,7 @@
 package com.nhom22.studentmanagement.data.api;
 
+import com.nhom22.studentmanagement.data.model.Class;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -17,7 +19,7 @@ public interface ClassApi {
     Call<List<Class>> getClassesByUserId(@Path("userId") String userId);
     @GET("classes/{identifier}")
     Call<Class> getClassByIdentifier(@Path("identifier") String classIdentifier);
-    @POST("classes/")
+    @POST("classes")
     Call<Class> createClass(@Body Class newClass);
     @POST("classes/{classIdentifier}/student")
     Call<Void> addStudentToClass(@Path("identifier") String classIdentifier, @Path("studentId") String studentId);
@@ -25,6 +27,6 @@ public interface ClassApi {
     Call<Class> updateClass(@Path("identifier") String classIdentifier, @Body Class updatedClass);
     @DELETE("classes/{classIdentifier}")
     Call<Void> deleteClass(@Path("classIdentifier") String classIdentifier);
-    @DELETE("class/{classIdentifier/student/{studentId}")
+    @DELETE("classes/{classIdentifier/student/{studentId}")
     Call<Void> removeStudentFromClass(@Path("classIdentifier") String classIdentifier, @Path("studentId") String studentId);
 }

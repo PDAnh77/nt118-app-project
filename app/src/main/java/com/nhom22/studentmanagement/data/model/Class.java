@@ -10,14 +10,14 @@ public class Class {
     private String teacherId;
 
     private String description = null;
-    private List<User> students = null;
+    private List<String> students = null;
 
     public Class(String className, String classCode, String teacherId, String description, List<User> students) {
         this.className = className;
         this.classCode = classCode;
         this.teacherId = teacherId;
         this.description = description;
-        this.students = students != null ? students : new ArrayList<>();
+        this.students = new ArrayList<>();
     }
 
     public Class(Class otherClass) {
@@ -69,19 +69,18 @@ public class Class {
         this.description = description;
     }
 
-    public List<User> getStudents() {
+    public List<String> getStudents() {
         return students;
     }
 
-    public void setStudents(List<User> students) {
+    public void setStudents(List<String> students) {
         this.students = students;
     }
 
     public void addStudent(User student) {
-        if (students == null) {
-            students = new ArrayList<>();
+        if(student != null && !students.contains(student.getId())) {
+            students.add(student.getId());
         }
-        students.add(student);
     }
 
     public void removeStudent(User student) {
