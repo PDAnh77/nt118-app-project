@@ -45,7 +45,7 @@ public class LoginTabFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("user_id", currentUserId);
 
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        Intent intent = new Intent(getActivity(), HomeActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);
                         getActivity().finish();

@@ -1,5 +1,6 @@
 package com.nhom22.studentmanagement;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.nhom22.studentmanagement.data.ApiClient;
 import com.nhom22.studentmanagement.data.api.UserApi;
@@ -19,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserApi userApi = ApiClient.getClient().create(UserApi.class);
     String currentUserId = null;
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -53,9 +55,36 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Lỗi lấy dữ liệu người dùng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Lỗi lấy dữ liệu người dùng", Toast.LENGTH_SHORT).show();
             }
 
+        });
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.bottom_home) {
+                return true;
+            } else if (itemId == R.id.bottom_search) {
+                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
+                return true;
+            } else if (itemId == R.id.bottom_result) {
+                startActivity(new Intent(getApplicationContext(), ResultActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
+                return true;
+            } else if (itemId == R.id.bottom_profile) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
+                return true;
+            }
+            return false;
         });
     }
 }
