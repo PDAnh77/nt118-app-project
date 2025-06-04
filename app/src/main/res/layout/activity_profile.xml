@@ -23,206 +23,241 @@
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_menu" />
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="651dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#35367E">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="0dp"
+                android:layout_height="51dp"
+                android:layout_marginTop="148dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/arc_3" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="108dp"
+                android:layout_height="98dp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView2"
+                app:layout_constraintVertical_bias="0.469"
+                app:srcCompat="@drawable/user_1" />
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="32dp"
+                android:text="Edit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="148dp"
+                android:text="Cancel"
+                app:layout_constraintStart_toEndOf="@+id/button5"
+                app:layout_constraintTop_toTopOf="@+id/button5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="#35367E"
+            android:textSize="26dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sinh viên"
+            android:textAlignment="center"
+            android:textColor="#35367E"
+
+            />
+
+        <LinearLayout
+            android:layout_width="348dp"
+            android:layout_height="398dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#35367E">
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_info_profile"
+                android:elevation="3dp">
 
                 <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="0dp"
-                    android:layout_height="51dp"
-                    app:srcCompat="@drawable/arc_3"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="141dp" />
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="108dp"
-                    android:layout_height="98dp"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView2"
+                    android:id="@+id/email_img"
+                    android:layout_width="42dp"
+                    android:layout_height="29dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.052"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView2"
-                    app:layout_constraintVertical_bias="0.469"
-                    app:srcCompat="@drawable/user_1" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.571"
+                    app:srcCompat="@drawable/email" />
+
+                <TextView
+                    android:id="@+id/email_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:text="TextView@gmail.com"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/email_img"
+                    app:layout_constraintStart_toEndOf="@+id/email_img"
+                    app:layout_constraintTop_toTopOf="@+id/email_img" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_info_profile"
+                android:elevation="3dp">
+
+                <ImageView
+                    android:id="@+id/birthday_img"
+                    android:layout_width="42dp"
+                    android:layout_height="29dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.052"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.571"
+                    app:srcCompat="@drawable/birthday_cake" />
+
+                <TextView
+                    android:id="@+id/birthday_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:text="TextView@gmail.com"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/birthday_img"
+                    app:layout_constraintStart_toEndOf="@+id/birthday_img"
+                    app:layout_constraintTop_toTopOf="@+id/birthday_img" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_info_profile"
+                android:elevation="3dp">
+
+                <ImageView
+                    android:id="@+id/class_img"
+                    android:layout_width="44dp"
+                    android:layout_height="33dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.052"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.571"
+                    app:srcCompat="@drawable/class_icon" />
+
+                <TextView
+                    android:id="@+id/class_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:text="TextView@gmail.com"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/class_img"
+                    app:layout_constraintStart_toEndOf="@+id/class_img"
+                    app:layout_constraintTop_toTopOf="@+id/class_img" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_info_profile"
+                android:elevation="3dp">
+
+                <ImageView
+                    android:id="@+id/location_img"
+                    android:layout_width="42dp"
+                    android:layout_height="29dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.052"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.571"
+                    app:srcCompat="@drawable/placeholder" />
+
+                <TextView
+                    android:id="@+id/location_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:text="TextView@gmail.com"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/location_img"
+                    app:layout_constraintStart_toEndOf="@+id/location_img"
+                    app:layout_constraintTop_toTopOf="@+id/location_img" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="190dp">
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="68dp"
+                    android:text="Logout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.501"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginTop="8dp"
-                android:textAlignment="center"
-                android:text="TextView"
-                android:textColor="#35367E"
-                android:textSize="26dp"
-                />
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Sinh viên"
-                android:textColor="#35367E"
 
-                />
-
-            <LinearLayout
-                android:layout_width="348dp"
-                android:layout_height="398dp"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/background_info_profile"
-                    android:elevation="3dp">
-
-                    <ImageView
-                        android:id="@+id/email_img"
-                        android:layout_width="42dp"
-                        android:layout_height="29dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.052"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571"
-                        app:srcCompat="@drawable/email" />
-
-                    <TextView
-                        android:id="@+id/email_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:text="TextView@gmail.com"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-
-                        app:layout_constraintBottom_toBottomOf="@+id/email_img"
-                        app:layout_constraintStart_toEndOf="@+id/email_img"
-                        app:layout_constraintTop_toTopOf="@+id/email_img" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/background_info_profile"
-                    android:elevation="3dp">
-
-                    <ImageView
-                        android:id="@+id/birthday_img"
-                        android:layout_width="42dp"
-                        android:layout_height="29dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.052"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571"
-                        app:srcCompat="@drawable/birthday_cake" />
-
-                    <TextView
-                        android:id="@+id/birthday_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:text="TextView@gmail.com"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-
-                        app:layout_constraintBottom_toBottomOf="@+id/birthday_img"
-                        app:layout_constraintStart_toEndOf="@+id/birthday_img"
-                        app:layout_constraintTop_toTopOf="@+id/birthday_img" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/background_info_profile"
-                    android:elevation="3dp">
-
-                    <ImageView
-                        android:id="@+id/class_img"
-                        android:layout_width="44dp"
-                        android:layout_height="33dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.052"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571"
-                        app:srcCompat="@drawable/class_icon" />
-
-                    <TextView
-                        android:id="@+id/class_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:text="TextView@gmail.com"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-
-                        app:layout_constraintBottom_toBottomOf="@+id/class_img"
-                        app:layout_constraintStart_toEndOf="@+id/class_img"
-                        app:layout_constraintTop_toTopOf="@+id/class_img" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/background_info_profile"
-                    android:elevation="3dp">
-
-                    <ImageView
-                        android:id="@+id/location_img"
-                        android:layout_width="42dp"
-                        android:layout_height="29dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.052"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571"
-                        app:srcCompat="@drawable/placeholder" />
-
-                    <TextView
-                        android:id="@+id/location_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
-                        android:text="TextView@gmail.com"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-
-                        app:layout_constraintBottom_toBottomOf="@+id/location_img"
-                        app:layout_constraintStart_toEndOf="@+id/location_img"
-                        app:layout_constraintTop_toTopOf="@+id/location_img" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+
 </RelativeLayout>

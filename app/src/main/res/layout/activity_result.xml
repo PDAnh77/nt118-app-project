@@ -5,26 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ResultActivity">
-
+    tools:context=".ResultActivity"
+    android:id="@+id/main">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Result"
         android:textColor="@color/lavender"
         android:layout_centerInParent="true"
-        android:textSize="36sp"
-        android:id="@+id/main"/>
-
+        android:textSize="36sp" />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="28dp"
+
         android:background="@drawable/bottom_background"
         android:elevation="2dp"
         app:itemIconSize="30dp"
@@ -32,5 +27,4 @@
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_menu" />
-
 </RelativeLayout>
