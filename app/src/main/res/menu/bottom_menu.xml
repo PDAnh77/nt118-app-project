@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home" />
+    <item
+        android:id="@+id/bottom_result"
+        android:icon="@drawable/view_list_24px"
+        android:title="Result" />
+    <item
+        android:id="@+id/bottom_search"
+        android:icon="@drawable/quick_reference_all_24px"
+        android:title="Search" />
+    <item
+        android:id="@+id/bottom_profile"
+        android:icon="@drawable/account_circle_24px"
+        android:title="Profile" />
+</menu>
