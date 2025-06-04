@@ -1,18 +1,19 @@
 package com.nhom22.studentmanagement.data.model;
 
+import java.util.Date;
+
 public class User {
     private String id;
     private String username;
     private String password;
     private String role = "student";
     private String fullname = null;
-    private String brithday = null;
+    private String email = null;
+    private Date brithday = null;
     private Integer academicYear = null;
 
-    public User(String username, String password, String role, String fullname, String brithday, Integer academicYear) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
+    public User(String email, String fullname, Date brithday, Integer academicYear) {
+        this.email = email;
         this.fullname = fullname;
         this.brithday = brithday;
         this.academicYear = academicYear;
@@ -53,8 +54,11 @@ public class User {
     public String getFullname() { return fullname; }
     public void setFullname(String fullname) { this.fullname = fullname; }
 
-    public String getBrithday() { return brithday; }
-    public void setBrithday(String brithday) { this.brithday = brithday; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public Date getBrithday() { return brithday; }
+    public void setBrithday(Date brithday) { this.brithday = brithday; }
 
     public Integer getAcademicYear() { return academicYear; }
     public void setAcademicYear(Integer academicYear) { this.academicYear = academicYear; }

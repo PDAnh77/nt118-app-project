@@ -1,5 +1,6 @@
 package com.nhom22.studentmanagement;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +27,8 @@ import retrofit2.Response;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
 
-    private List<Notification> notifications;
-    private NotificationActionListener listener;
+    private final List<Notification> notifications;
+    private final NotificationActionListener listener;
     UserApi userApi = ApiClient.getClient().create(UserApi.class);
     ClassApi classApi = ApiClient.getClient().create(ClassApi.class);
 
@@ -56,9 +57,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Call<User> callUser  = userApi.getUserById(notification.getStudentId());
         callUser.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.isSuccessful()) {
                     User foundUser = response.body();
+                    assert foundUser != null;
                     holder.tvUsername.setText(foundUser.getUsername());
                 } else {
                     Log.e("UserAPI", "Lỗi tải thông tin người dùng: " + response.code());
@@ -75,10 +77,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         Call<Class> callClass = classApi.getClassByIdentifier(notification.getClassId());
         callClass.enqueue(new Callback<>() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(Call<Class> call, Response<Class> response) {
+            public void onResponse(@NonNull Call<Class> call, @NonNull Response<Class> response) {
                 if (response.isSuccessful()) {
                     Class foundClass = response.body();
+                    assert foundClass != null;
                     holder.tvMessage.setText("Muốn tham gia lớp " + foundClass.getClassName() + " (" + foundClass.getClassCode() + ")");
                 } else {
                     Log.e("ClassAPI", "Lỗi tải thông tin lớp: " + response.code());
@@ -86,8 +90,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 }
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onFailure(Call<Class> call, Throwable t) {
+            public void onFailure(@NonNull Call<Class> call, @NonNull Throwable t) {
                 Log.e("ClassAPI", "Gọi API thất bại", t);
                 holder.tvMessage.setText("Lỗi tải thông tin lớp");
             }
