@@ -45,6 +45,10 @@ public class Grade {
     }
 
     public Double getAverageGrade() {
-        return process * 0.2 + midterm * 0.3 + finalGrade * 0.5;
+        double p = process != null ? process : 0;
+        double m = midterm != null ? midterm : 0;
+        double f = finalGrade != null ? finalGrade : 0;
+        return p * 0.2 + m * 0.3 + f * 0.5;
     }
+
 }

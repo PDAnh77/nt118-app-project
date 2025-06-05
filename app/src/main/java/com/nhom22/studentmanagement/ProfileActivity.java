@@ -1,12 +1,15 @@
 package com.nhom22.studentmanagement;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,9 +25,12 @@ import com.nhom22.studentmanagement.data.ApiClient;
 import com.nhom22.studentmanagement.data.api.UserApi;
 import com.nhom22.studentmanagement.data.model.User;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import retrofit2.Call;
@@ -54,17 +60,17 @@ public class ProfileActivity extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.bottom_search) {
                 startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 finish();
                 return true;
             } else if (itemId == R.id.bottom_result) {
                 startActivity(new Intent(getApplicationContext(), ResultActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 finish();
                 return true;
             } else if (itemId == R.id.bottom_home) {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 finish();
                 return true;
             }
@@ -78,9 +84,10 @@ public class ProfileActivity extends AppCompatActivity {
         TextView roleText = findViewById(R.id.role_txt);
         TextView usernameText = findViewById(R.id.username_txt);
         ConstraintLayout academicYearInputField = findViewById(R.id.academicYear_inputfield);
-        Button btnEdit = findViewById(R.id.btnEdit);
-        Button btnCancel = findViewById(R.id.btnCancel);
+        ImageButton btnEdit = findViewById(R.id.btnEdit);
+        ImageButton btnCancel = findViewById(R.id.btnCancel);
         Button btnLogout = findViewById(R.id.btnLogout);
+        Button btnDelete = findViewById(R.id.btnDelete);
         SharedPreferences sharedPreferences = getSharedPreferences("current_user", MODE_PRIVATE);
         String currentUserRole = sharedPreferences.getString("role", "");
         String currentUserId = sharedPreferences.getString("id", "");
@@ -102,15 +109,27 @@ public class ProfileActivity extends AppCompatActivity {
         getUser.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-
                 if (response.isSuccessful()) {
                     User currentUser = response.body();
-                    emailText.setText(currentUser.getUsername());
-                    if (currentUser.getBrithday() != null) {
-                        birthdayText.setText(new SimpleDateFormat("dd/MM/yyyy").format(currentUser.getBrithday()));
+                    emailText.setText(currentUser.getEmail());
+
+                    if (currentUser.getBirthday() != null && !currentUser.getBirthday().isEmpty()) {
+                        try {
+                            // Parse chuỗi ISO 8601 thành Date
+                            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault());
+                            Date birthdayDate = isoFormat.parse(currentUser.getBirthday());
+
+                            // Format lại thành dd/MM/yyyy để hiển thị
+                            SimpleDateFormat displayFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                            birthdayText.setText(displayFormat.format(birthdayDate));
+                        } catch (Exception e) {
+                            // Nếu lỗi parse thì hiển thị chuỗi gốc
+                            birthdayText.setText(currentUser.getBirthday());
+                        }
                     } else {
                         birthdayText.setText("");
                     }
+
                     fullnameText.setText(currentUser.getFullname());
                     if(currentUser.getAcademicYear() != null) {
                         academicYearText.setText(currentUser.getAcademicYear().toString());
@@ -159,15 +178,13 @@ public class ProfileActivity extends AppCompatActivity {
                 fullnameText.setEnabled(true);
                 academicYearText.setEnabled(true);
                 editMode.set(true);
-                btnEdit.setText("Lưu");
+                btnEdit.setImageResource(R.drawable.bookmarks);
                 btnCancel.setVisibility(View.VISIBLE);
+                btnLogout.setVisibility(View.GONE);
+                btnDelete.setVisibility(View.GONE);
             } else {
-                // Lấy timestamp ngày sinh đã lưu trong tag
-                Object birthdayTag = birthdayText.getTag();
-                Date birthdayDate = null;
-                if (birthdayTag instanceof Long) {
-                    birthdayDate = new Date((Long) birthdayTag);
-                }
+                // Lấy trực tiếp chuỗi ngày sinh đã nhập (định dạng dd/MM/yyyy)
+                String birthdayStr = birthdayText.getText().toString().trim();
 
                 Integer academicYearInt = null;
                 try {
@@ -182,7 +199,7 @@ public class ProfileActivity extends AppCompatActivity {
                 User updatedUser = new User(
                         emailText.getText().toString(),
                         fullnameText.getText().toString(),
-                        birthdayDate,
+                        birthdayStr,
                         academicYearInt
                 );
 
@@ -196,17 +213,49 @@ public class ProfileActivity extends AppCompatActivity {
                             fullnameText.setEnabled(false);
                             academicYearText.setEnabled(false);
                             editMode.set(false);
-                            btnEdit.setText("Chỉnh sửa");
+                            btnEdit.setImageResource(R.drawable.edit_square);
                             btnCancel.setVisibility(View.GONE);
+                            btnLogout.setVisibility(View.VISIBLE);
+                            btnDelete.setVisibility(View.VISIBLE);
+                            Log.d("ProfileDebug", "User updated: " + response.body());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-
+                        Log.e("ProfileDebug", "Update failed", t);
                     }
                 });
             }
+        });
+
+        btnDelete.setOnClickListener(v -> {
+            new AlertDialog.Builder(ProfileActivity.this)
+                    .setTitle("Xác nhận xóa tài khoản")
+                    .setMessage("Bạn có chắc chắn muốn xóa tài khoản này không? Hành động này không thể hoàn tác.")
+                    .setPositiveButton("Xóa", (dialog, which) -> {
+                        Call<Void> deleteUser = userApi.deleteUser(currentUserId);
+                        deleteUser.enqueue(new Callback<>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    sharedPreferences.edit().clear().apply();
+                                    startActivity(new Intent(getApplicationContext(), LoginScreen.class));
+                                    finish();
+                                } else {
+                                    Log.e("DeleteDebug", "Xóa thất bại - Code: " + response.code());
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.e("ProfileDebug", "Delete failed", t);
+                            }
+                        });
+                    })
+                    .setNegativeButton("Hủy", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
 
         btnLogout.setOnClickListener(v -> {
@@ -221,8 +270,10 @@ public class ProfileActivity extends AppCompatActivity {
             fullnameText.setEnabled(false);
             academicYearText.setEnabled(false);
             editMode.set(false);
-            btnEdit.setText("Chỉnh sửa");
+            btnEdit.setImageResource(R.drawable.edit_square);
             btnCancel.setVisibility(View.GONE);
+            btnLogout.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
         });
     }
 }

@@ -23,6 +23,6 @@ public interface UserApi {
     Call<User> getUserById(@Path("userid") String userId);
     @PUT("users/{userid}")
     Call<User> updateUser(@Path("userid") String userId, @Body User user);
-    @DELETE("user/{userid}")
+    @DELETE("users/{userid}")
     Call<Void> deleteUser(@Path("userid") String userId);
 }

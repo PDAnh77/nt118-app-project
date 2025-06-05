@@ -1,30 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ResultActivity"
+    android:orientation="vertical"
     android:id="@+id/main">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Result"
-        android:textColor="@color/lavender"
-        android:layout_centerInParent="true"
-        android:textSize="36sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp">
+
+        <TextView
+            android:id="@+id/title_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Bảng điểm:"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="28sp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chưa có thông tin"
+            android:textSize="22sp"
+            android:textColor="@android:color/darker_gray"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+            <TextView
+                android:id="@+id/tvMaLop"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Mã lớp"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvDiemQT"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="QT"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvDiemGK"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="GK"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvDiemCK"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="CK"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvDiemTB"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="TB"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/grade_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-
+        android:layout_gravity="bottom"
         android:background="@drawable/bottom_background"
         android:elevation="2dp"
-        app:itemIconSize="30dp"
+        app:itemIconSize="35dp"
         app:itemIconTint="@drawable/item_selector"
         app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_menu" />
-</RelativeLayout>
+</LinearLayout>

@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -37,8 +40,8 @@ public class LoginTabFragment extends Fragment {
         Button loginBtn = view.findViewById(R.id.login_button);
 
         loginBtn.setOnClickListener(v -> {
-            Call<String> callLogin = userApi.login(new User(username.getText().toString(), password.getText().toString()));
-            callLogin.enqueue(new Callback<>() {
+            Call<String> userLogin = userApi.login(new User(username.getText().toString(), password.getText().toString()));
+            userLogin.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()) {
@@ -51,6 +54,7 @@ public class LoginTabFragment extends Fragment {
                             public void onResponse(Call<User> call, Response<User> response) {
                                 if (response.isSuccessful()) {
                                     User currentUser = response.body();
+                                    assert currentUser != null;
                                     sharedPreferences.edit().putString("role", currentUser.getRole()).apply();
                                 }
                             }
@@ -66,14 +70,17 @@ public class LoginTabFragment extends Fragment {
                         getActivity().finish();
                     }  else if (response.code() == 401) {
                         Toast.makeText(getContext(), "Username hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 404) {
+                        Toast.makeText(getContext(), "Người dùng không tồn tại", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "Server error: " + response.code(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Lỗi Server: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Gửi dữ liệu đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                    Log.d("LoginDebug", "Username: " + username.getText().toString() + ", Password: " + password.getText().toString());
                 }
             });
         });

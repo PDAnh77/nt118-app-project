@@ -21,14 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.nhom22.studentmanagement.data.ApiClient;
+import com.nhom22.studentmanagement.data.api.ClassApi;
 import com.nhom22.studentmanagement.data.api.NotificationApi;
 import com.nhom22.studentmanagement.data.api.UserApi;
 import com.nhom22.studentmanagement.data.model.Notification;
 import com.nhom22.studentmanagement.data.model.User;
+import com.nhom22.studentmanagement.data.model.Class;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,8 +38,10 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
     UserApi userApi = ApiClient.getClient().create(UserApi.class);
+    ClassApi classApi = ApiClient.getClient().create(ClassApi.class);
     NotificationApi notificationApi = ApiClient.getClient().create(NotificationApi.class);
     String currentUserId = null;
+    String currentUserRole = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,10 @@ public class HomeActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.hello_txt);
         SharedPreferences sharedPreferences = getSharedPreferences("current_user", MODE_PRIVATE);
         currentUserId = sharedPreferences.getString("id", null);
+        currentUserRole = sharedPreferences.getString("role", null);
         ImageButton btnNotification = findViewById(R.id.btnNotification);
+        TextView titleTextView = findViewById(R.id.title_txt);
+        TextView emptyView = findViewById(R.id.emptyView);
 
         Call<User> call = userApi.getUserById(currentUserId);
         call.enqueue(new Callback<>() {
@@ -64,6 +71,12 @@ public class HomeActivity extends AppCompatActivity {
                     User currentUser = (User) response.body();
                     assert currentUser != null;
                     textView.setText("Xin chào " + currentUser.getUsername() + "!");
+
+                    if (Objects.equals(currentUser.getRole(), "teacher")) {
+                        titleTextView.setText("Các lớp đang mở:");
+                    } else {
+                        titleTextView.setText("Các lớp đang tham gia:");
+                    }
                 }
             }
 
@@ -99,51 +112,75 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         });
 
+        Call<List<Class>> joinedClasses = classApi.getClassesByUserId(currentUserId);
+        joinedClasses.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
+                RecyclerView classesRecyclerView = findViewById(R.id.class_list);
+                classesRecyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                if (!response.isSuccessful()) {
+                    classesRecyclerView.setVisibility(View.GONE);
+                        emptyView.setVisibility(View.VISIBLE);
+                    return;
+                } else {
+                    emptyView.setVisibility(View.GONE);
+                }
+
+                ClassAdapter classAdapter = new ClassAdapter(response.body());
+                classesRecyclerView.setAdapter(classAdapter);
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.e("ClassAPI", "Lỗi tải danh sách lớp", t);
+            }
+        });
+
         btnNotification.setOnClickListener(v -> showNotificationBottomSheet());
-        }
+    }
 
-        private void showNotificationBottomSheet() {
-            View view = getLayoutInflater().inflate(R.layout.notification_bottom_sheet, null);
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-            bottomSheetDialog.setContentView(view);
+    private void showNotificationBottomSheet() {
+        View view = getLayoutInflater().inflate(R.layout.notification_bottom_sheet, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(view);
 
-            RecyclerView recyclerView = view.findViewById(R.id.recyclerNotifications);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerNotifications);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            // Gọi API lấy thông báo
-            Call<List<Notification>> call = notificationApi.getAllNotifications();
-            call.enqueue(new Callback<>() {
-                @Override
-                public void onResponse(@NonNull Call<List<Notification>> call, @NonNull Response<List<Notification>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        List<Notification> notifications = response.body();
-                        NotificationAdapter adapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationActionListener() {
-                            @Override
-                            public void onAccept(Notification notification) {
-                                notification.setStatus(1);
-                                updateNotificationStatus(notification);
-                            }
+        // Gọi API lấy thông báo
+        Call<List<Notification>> call = notificationApi.getAllNotifications();
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Notification>> call, @NonNull Response<List<Notification>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Notification> notifications = response.body();
+                    NotificationAdapter adapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationActionListener() {
+                        @Override
+                        public void onAccept(Notification notification) {
+                            notification.setStatus(1);
+                            updateNotificationStatus(notification);
+                        }
 
-                            @Override
-                            public void onReject(Notification notification) {
-                                notification.setStatus(2);
-                                updateNotificationStatus(notification);
-                            }
-                        });
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        Toast.makeText(HomeActivity.this, "Không có thông báo nào", Toast.LENGTH_SHORT).show();
-                    }
+                        @Override
+                        public void onReject(Notification notification) {
+                            notification.setStatus(2);
+                            updateNotificationStatus(notification);
+                        }
+                    });
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    Toast.makeText(HomeActivity.this, "Không có thông báo nào", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onFailure(@NonNull Call<List<Notification>> call, @NonNull Throwable t) {
-                    Toast.makeText(HomeActivity.this, "Lỗi tải thông báo", Toast.LENGTH_SHORT).show();
-                }
-            });
+            @Override
+            public void onFailure(@NonNull Call<List<Notification>> call, @NonNull Throwable t) {
+                Toast.makeText(HomeActivity.this, "Lỗi tải thông báo", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-            bottomSheetDialog.show();
-        }
+        bottomSheetDialog.show();
+    }
 
     private void updateNotificationStatus(Notification notification) {
         notificationApi.updateNotification(notification.getId(), notification).enqueue(new Callback<>() {
