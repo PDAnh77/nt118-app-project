@@ -39,7 +39,7 @@ public class ResultActivity extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.bottom_home) {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 finish();
                 return true;
             } else if (itemId == R.id.bottom_profile) {
