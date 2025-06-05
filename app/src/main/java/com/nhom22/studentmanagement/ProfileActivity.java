@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -83,8 +84,8 @@ public class ProfileActivity extends AppCompatActivity {
         TextView roleText = findViewById(R.id.role_txt);
         TextView usernameText = findViewById(R.id.username_txt);
         ConstraintLayout academicYearInputField = findViewById(R.id.academicYear_inputfield);
-        Button btnEdit = findViewById(R.id.btnEdit);
-        Button btnCancel = findViewById(R.id.btnCancel);
+        ImageButton btnEdit = findViewById(R.id.btnEdit);
+        ImageButton btnCancel = findViewById(R.id.btnCancel);
         Button btnLogout = findViewById(R.id.btnLogout);
         Button btnDelete = findViewById(R.id.btnDelete);
         SharedPreferences sharedPreferences = getSharedPreferences("current_user", MODE_PRIVATE);
@@ -177,7 +178,7 @@ public class ProfileActivity extends AppCompatActivity {
                 fullnameText.setEnabled(true);
                 academicYearText.setEnabled(true);
                 editMode.set(true);
-                btnEdit.setText("Lưu");
+                btnEdit.setImageResource(R.drawable.bookmarks);
                 btnCancel.setVisibility(View.VISIBLE);
                 btnLogout.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
@@ -212,7 +213,7 @@ public class ProfileActivity extends AppCompatActivity {
                             fullnameText.setEnabled(false);
                             academicYearText.setEnabled(false);
                             editMode.set(false);
-                            btnEdit.setText("Chỉnh sửa");
+                            btnEdit.setImageResource(R.drawable.edit_square);
                             btnCancel.setVisibility(View.GONE);
                             btnLogout.setVisibility(View.VISIBLE);
                             btnDelete.setVisibility(View.VISIBLE);
@@ -269,7 +270,7 @@ public class ProfileActivity extends AppCompatActivity {
             fullnameText.setEnabled(false);
             academicYearText.setEnabled(false);
             editMode.set(false);
-            btnEdit.setText("Chỉnh sửa");
+            btnEdit.setImageResource(R.drawable.edit_square);
             btnCancel.setVisibility(View.GONE);
             btnLogout.setVisibility(View.VISIBLE);
             btnDelete.setVisibility(View.VISIBLE);

@@ -40,8 +40,8 @@ public class LoginTabFragment extends Fragment {
         Button loginBtn = view.findViewById(R.id.login_button);
 
         loginBtn.setOnClickListener(v -> {
-            Call<String> callLogin = userApi.login(new User(username.getText().toString(), password.getText().toString()));
-            callLogin.enqueue(new Callback<>() {
+            Call<String> userLogin = userApi.login(new User(username.getText().toString(), password.getText().toString()));
+            userLogin.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()) {

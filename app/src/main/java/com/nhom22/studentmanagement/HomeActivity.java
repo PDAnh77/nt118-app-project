@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.nhom22.studentmanagement.data.ApiClient;
 import com.nhom22.studentmanagement.data.api.ClassApi;
 import com.nhom22.studentmanagement.data.api.NotificationApi;
@@ -114,8 +112,8 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         });
 
-        Call<List<Class>> callClasses = classApi.getClassesByUserId(currentUserId);
-        callClasses.enqueue(new Callback<>() {
+        Call<List<Class>> joinedClasses = classApi.getClassesByUserId(currentUserId);
+        joinedClasses.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
                 RecyclerView classesRecyclerView = findViewById(R.id.class_list);

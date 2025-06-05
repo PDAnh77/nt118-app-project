@@ -57,8 +57,8 @@ public class SignupTabFragment extends Fragment {
                 return;
             }
 
-            Call<User> call = userApi.signup(new User(username.getText().toString(), password.getText().toString(), userRole));
-            call.enqueue(new Callback<>() {
+            Call<User> userSignup = userApi.signup(new User(username.getText().toString(), password.getText().toString(), userRole));
+            userSignup.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
