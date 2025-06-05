@@ -49,6 +49,7 @@
                 android:id="@+id/login_button"
                 android:layout_width="300dp"
                 android:layout_height="70dp"
+                android:backgroundTint="#6D72FF"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:text="Đăng nhập"

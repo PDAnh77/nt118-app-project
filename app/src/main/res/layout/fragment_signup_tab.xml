@@ -75,6 +75,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:id="@+id/signup_button"
+                android:backgroundTint="#6D72FF"
                 android:textSize="18sp"
                 android:text="Đăng ký"
                 app:cornerRadius = "30dp"/>

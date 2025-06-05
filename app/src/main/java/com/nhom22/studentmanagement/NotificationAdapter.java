@@ -112,6 +112,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return notifications.size();
     }
 
+    public void removeNotification(Notification notification) {
+        int index = notifications.indexOf(notification);
+        if (index != -1) {
+            notifications.remove(index);
+            notifyItemRemoved(index);
+        }
+    }
+
     static class NotificationViewHolder extends RecyclerView.ViewHolder {
         TextView tvUsername, tvMessage;
         ImageButton btnAccept, btnReject;

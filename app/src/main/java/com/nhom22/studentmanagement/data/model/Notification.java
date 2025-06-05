@@ -31,6 +31,12 @@ public class Notification {
         this.status = other.status;
     }
 
+    public Notification(String studentId, String classId, String type) {
+        this.studentId = studentId;
+        this.classId = classId;
+        this.type = type;
+    }
+
     public String getId() {
         return id;
     }

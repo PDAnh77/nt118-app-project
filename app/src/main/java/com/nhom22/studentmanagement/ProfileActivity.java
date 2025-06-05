@@ -53,16 +53,26 @@ public class ProfileActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_profile);
+        SharedPreferences sharedPreferences = getSharedPreferences("current_user", MODE_PRIVATE);
+        String currentUserRole = sharedPreferences.getString("role", "");
+        String currentUserId = sharedPreferences.getString("id", "");
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.bottom_profile) {
                 return true;
             } else if (itemId == R.id.bottom_search) {
-                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                finish();
-                return true;
+                if (currentUserRole.equals("teacher")) {
+                    startActivity(new Intent(getApplicationContext(), CreateClassActivity.class));
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    finish();
+                    return true;
+                } else {
+                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    finish();
+                    return true;
+                }
             } else if (itemId == R.id.bottom_result) {
                 startActivity(new Intent(getApplicationContext(), ResultActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -88,9 +98,6 @@ public class ProfileActivity extends AppCompatActivity {
         ImageButton btnCancel = findViewById(R.id.btnCancel);
         Button btnLogout = findViewById(R.id.btnLogout);
         Button btnDelete = findViewById(R.id.btnDelete);
-        SharedPreferences sharedPreferences = getSharedPreferences("current_user", MODE_PRIVATE);
-        String currentUserRole = sharedPreferences.getString("role", "");
-        String currentUserId = sharedPreferences.getString("id", "");
 
         roleText.setText(currentUserRole);
         AtomicBoolean editMode = new AtomicBoolean(false);
@@ -200,7 +207,8 @@ public class ProfileActivity extends AppCompatActivity {
                         emailText.getText().toString(),
                         fullnameText.getText().toString(),
                         birthdayStr,
-                        academicYearInt
+                        academicYearInt,
+                        currentUserRole
                 );
 
                 Call<User> updateUser = userApi.updateUser(currentUserId, updatedUser);

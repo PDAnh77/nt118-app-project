@@ -26,9 +26,11 @@ import com.nhom22.studentmanagement.data.api.ClassApi;
 import com.nhom22.studentmanagement.data.api.NotificationApi;
 import com.nhom22.studentmanagement.data.api.UserApi;
 import com.nhom22.studentmanagement.data.model.Notification;
+import com.nhom22.studentmanagement.data.model.StudentIdRequest;
 import com.nhom22.studentmanagement.data.model.User;
 import com.nhom22.studentmanagement.data.model.Class;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +41,7 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity {
     UserApi userApi = ApiClient.getClient().create(UserApi.class);
     ClassApi classApi = ApiClient.getClient().create(ClassApi.class);
+    private NotificationAdapter adapter;
     NotificationApi notificationApi = ApiClient.getClient().create(NotificationApi.class);
     String currentUserId = null;
     String currentUserRole = null;
@@ -57,20 +60,24 @@ public class HomeActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.hello_txt);
         SharedPreferences sharedPreferences = getSharedPreferences("current_user", MODE_PRIVATE);
         currentUserId = sharedPreferences.getString("id", null);
-        currentUserRole = sharedPreferences.getString("role", null);
         ImageButton btnNotification = findViewById(R.id.btnNotification);
         TextView titleTextView = findViewById(R.id.title_txt);
         TextView emptyView = findViewById(R.id.emptyView);
 
-        Call<User> call = userApi.getUserById(currentUserId);
-        call.enqueue(new Callback<>() {
+        Call<User> userCall = userApi.getUserById(currentUserId);
+        userCall.enqueue(new Callback<>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
                 if (response.isSuccessful()) {
                     User currentUser = (User) response.body();
                     assert currentUser != null;
-                    textView.setText("Xin chào " + currentUser.getUsername() + "!");
+                    currentUserRole = currentUser.getRole();
+                    textView.setText("Xin chào, " + currentUser.getUsername() + "!");
+
+                    if (!Objects.equals(currentUser.getRole(), "teacher")) {
+                        btnNotification.setVisibility(View.GONE);
+                    }
 
                     if (Objects.equals(currentUser.getRole(), "teacher")) {
                         titleTextView.setText("Các lớp đang mở:");
@@ -94,10 +101,17 @@ public class HomeActivity extends AppCompatActivity {
             if (itemId == R.id.bottom_home) {
                 return true;
             } else if (itemId == R.id.bottom_search) {
-                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
+                if (Objects.equals(currentUserRole, "teacher")) {
+                    startActivity(new Intent(getApplicationContext(), CreateClassActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
+                    return true;
+                } else {
+                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
+                    return true;
+                }
             } else if (itemId == R.id.bottom_result) {
                 startActivity(new Intent(getApplicationContext(), ResultActivity.class));
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -148,34 +162,61 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Gọi API lấy thông báo
-        Call<List<Notification>> call = notificationApi.getAllNotifications();
+        Call<List<Notification>> call = notificationApi.getNotificationsByUserId(currentUserId);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<List<Notification>> call, @NonNull Response<List<Notification>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Notification> notifications = response.body();
-                    NotificationAdapter adapter = new NotificationAdapter(notifications, new NotificationAdapter.NotificationActionListener() {
+                    List<Notification> allNotifications = response.body();
+                    List<Notification> filteredNotifications = new ArrayList<>();
+                    for (Notification notification : allNotifications) {
+                        if (notification.getStatus() == 0) {
+                            filteredNotifications.add(notification);
+                        }
+                    }
+
+                    adapter = new NotificationAdapter(filteredNotifications, new NotificationAdapter.NotificationActionListener() {
                         @Override
                         public void onAccept(Notification notification) {
                             notification.setStatus(1);
                             updateNotificationStatus(notification);
+
+                            StudentIdRequest request = new StudentIdRequest(notification.getStudentId());
+
+                            classApi.addStudentToClass(notification.getClassId(), request).enqueue(new Callback<>()
+                            {
+                                @Override
+                                public void onResponse(Call<Class> call, Response<Class> response) {
+                                    if (response.isSuccessful()) {
+                                        Log.d("JoinClass", "Student added successfully: " + response.body().getClassName());
+                                    } else {
+                                        Log.e("JoinClass", "Failed: " + response.code());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Class> call, Throwable t) {
+                                    Log.e("JoinClass", "Error: " + t.getMessage());
+                                }
+                            });
+                            adapter.removeNotification(notification);
                         }
 
                         @Override
                         public void onReject(Notification notification) {
-                            notification.setStatus(2);
-                            updateNotificationStatus(notification);
+                            notificationApi.deleteNotification(notification.getId());
+                            adapter.removeNotification(notification);
                         }
                     });
                     recyclerView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(HomeActivity.this, "Không có thông báo nào", Toast.LENGTH_SHORT).show();
+                    Log.e("NotificationAPI", "Lỗi tải thông báo: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Notification>> call, @NonNull Throwable t) {
-                Toast.makeText(HomeActivity.this, "Lỗi tải thông báo", Toast.LENGTH_SHORT).show();
+                Log.e("NotificationAPI", "Lỗi gọi API: " + t.getMessage(), t);
             }
         });
 
@@ -186,17 +227,11 @@ public class HomeActivity extends AppCompatActivity {
         notificationApi.updateNotification(notification.getId(), notification).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<Notification> call, @NonNull Response<Notification> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(HomeActivity.this, "Đã cập nhật trạng thái: " + notification.getStatus(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(HomeActivity.this, "Lỗi cập nhật trạng thái", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
             public void onFailure(@NonNull Call<Notification> call, @NonNull Throwable t) {
                 Log.e("NotificationAPI", "Lỗi gọi API: " + t.getMessage(), t);
-                Toast.makeText(HomeActivity.this, "Lỗi tải thông báo: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

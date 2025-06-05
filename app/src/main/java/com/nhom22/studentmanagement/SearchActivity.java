@@ -1,8 +1,11 @@
 package com.nhom22.studentmanagement;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -20,7 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nhom22.studentmanagement.data.ApiClient;
 import com.nhom22.studentmanagement.data.api.ClassApi;
+import com.nhom22.studentmanagement.data.api.NotificationApi;
 import com.nhom22.studentmanagement.data.model.Class;
+import com.nhom22.studentmanagement.data.model.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,7 @@ public class SearchActivity extends AppCompatActivity {
     String currentUserId = null;
     boolean isSearching = false;
     ClassApi classApi = ApiClient.getClient().create(ClassApi.class);
+    NotificationApi notificationApi = ApiClient.getClient().create(NotificationApi.class);
     TextView emptyView;
     private List<Class> availableClasses = new ArrayList<>();
 
@@ -126,6 +132,8 @@ public class SearchActivity extends AppCompatActivity {
                     emptyView.setVisibility(View.GONE);
                     ClassAdapter classAdapter = new ClassAdapter(availableClasses);
                     classesRecyclerView.setAdapter(classAdapter);
+
+                    classAdapter.setOnItemClickListener(this::showJoinClassDialog);
                 }
             }
         });
@@ -180,6 +188,8 @@ public class SearchActivity extends AppCompatActivity {
 
                         ClassAdapter classAdapter = new ClassAdapter(availableClasses);
                         classesRecyclerView.setAdapter(classAdapter);
+
+                        classAdapter.setOnItemClickListener(SearchActivity.this::showJoinClassDialog);
                     }
 
                     @Override
@@ -196,4 +206,35 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+    private void showJoinClassDialog(Class selectedClass) {
+        new AlertDialog.Builder(this)
+                .setTitle("Tham gia lớp học")
+                .setMessage("Bạn có muốn tham gia lớp '" + selectedClass.getClassName() + "' không?")
+                .setPositiveButton("Tham gia", (dialog, which) -> {
+                    Notification newNotification = new Notification(currentUserId, selectedClass.getId(), "join");
+                    Call<Notification> createNotificationCall = notificationApi.createNotification(newNotification);
+                    createNotificationCall.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            if (response.isSuccessful()) {
+                                emptyView.setText("Gửi yêu cầu tham gia lớp học " + selectedClass.getClassCode() + " thành công!");
+                                emptyView.setVisibility(View.VISIBLE);
+
+                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                    emptyView.setVisibility(View.GONE);
+                                }, 6000);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Log.e("JoinClass", "Lỗi gửi yêu cầu tham gia lớp học", t);
+                        }
+                    });
+                    Log.d("DEBUG_CLASS", "Class: " + selectedClass.getClassCode() + " - ID: " + selectedClass.getId());
+
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
 }
