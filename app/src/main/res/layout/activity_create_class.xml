@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateClassActivity"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/title_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Tạo lớp mới:"
+            android:textStyle="bold"
+            android:background="@drawable/notification_card_bg"
+            android:textColor="#000"
+            android:textSize="28sp"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chưa có thông tin"
+                android:textSize="22sp"
+                android:textColor="@android:color/darker_gray"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/class_code_txt"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/edittext_bkg"
+                android:hint="Mã lớp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp">
+
+            </EditText>
+
+            <EditText
+                android:id="@+id/class_name_txt"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/edittext_bkg"
+                android:hint="Tên lớp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="20dp">
+
+            </EditText>
+
+            <EditText
+                android:id="@+id/class_description_txt"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/edittext_bkg"
+                android:hint="Mô tả"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="20dp">
+
+            </EditText>
+
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="260dp"
+                android:layout_height="64dp"
+                android:text="Xác nhận"
+                android:textSize="20sp"
+                android:backgroundTint="#6D72FF"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bottom_background"
+        android:elevation="2dp"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_menu" />
+</LinearLayout>

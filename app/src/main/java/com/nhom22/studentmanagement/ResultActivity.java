@@ -45,16 +45,27 @@ public class ResultActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_result);
+        // Lấy ID người dùng hiện tại từ SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("current_user", MODE_PRIVATE);
+        String currentUserId = sharedPreferences.getString("id", null);
+        String currentUserRole = sharedPreferences.getString("role", null);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.bottom_result) {
                 return true;
             } else if (itemId == R.id.bottom_search) {
-                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
+                if (currentUserRole.equals("teacher")) {
+                    startActivity(new Intent(getApplicationContext(), CreateClassActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
+                    return true;
+                } else {
+                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    finish();
+                    return true;
+                }
             } else if (itemId == R.id.bottom_home) {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -68,10 +79,6 @@ public class ResultActivity extends AppCompatActivity {
             }
             return false;
         });
-
-        // Lấy ID người dùng hiện tại từ SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("current_user", MODE_PRIVATE);
-        String currentUserId = sharedPreferences.getString("id", null);
 
         RecyclerView recyclerView = findViewById(R.id.grade_list);
         TextView emptyView = findViewById(R.id.emptyView);

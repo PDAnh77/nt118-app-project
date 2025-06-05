@@ -22,7 +22,16 @@ import retrofit2.Response;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
     private List<Class> classList;
+    private OnItemClickListener listener;
     UserApi userApi = ApiClient.getClient().create(UserApi.class);
+
+    public interface OnItemClickListener {
+        void onItemClick(Class selectedClass);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public ClassAdapter(List<Class> classList) {
         this.classList = classList;
@@ -41,7 +50,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         holder.classIdText.setText(classItem.getClassCode());
         holder.classNameText.setText(classItem.getClassName());
 
-        // Gọi API để lấy thông tin giáo viên dựa trên teacherId
         Call<User> callUser = userApi.getUserById(classItem.getTeacherId());
         callUser.enqueue(new Callback<>() {
             @Override
@@ -67,6 +75,12 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                 holder.teacherNameText.setText("Lỗi tải tên");
             }
         });
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(classItem);
+            }
+        });
     }
 
     @Override
@@ -85,3 +99,4 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         }
     }
 }
+

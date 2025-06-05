@@ -10,7 +10,8 @@ public class User {
     private String birthday = null;
     private Integer academicYear = null;
 
-    public User(String email, String fullname, String birthday, Integer academicYear) {
+    public User(String email, String fullname, String birthday, Integer academicYear, String role) {
+        this.role = role;
         this.email = email;
         this.fullname = fullname;
         this.birthday = birthday;

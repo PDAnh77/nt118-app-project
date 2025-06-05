@@ -1,9 +1,12 @@
 package com.nhom22.studentmanagement.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Class {
+    @SerializedName("_id")
     private String id;
     private String className;
     private String classCode;
@@ -18,6 +21,13 @@ public class Class {
         this.teacherId = teacherId;
         this.description = description;
         this.students = new ArrayList<>();
+    }
+
+    public Class(String classCode, String className, String description, String teacherId) {
+        this.teacherId = teacherId;
+        this.className = className;
+        this.classCode = classCode;
+        this.description = description;
     }
 
     public Class(Class otherClass) {

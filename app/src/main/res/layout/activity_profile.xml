@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity"
-    android:background="#F3F1F7"
+    android:background="#F2F1F6"
     android:id="@+id/main">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -58,7 +58,7 @@
                     android:id="@+id/btnCancel"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/notification_circle_button_bg"
+                    android:background="@drawable/default_circle_button_bg"
                     android:src="@drawable/close"
                     android:layout_gravity="center|start" />
 
@@ -71,7 +71,7 @@
                 <ImageButton
                     android:id="@+id/btnEdit"
                     android:layout_width="48dp"
-                    android:background="@drawable/notification_circle_button_bg"
+                    android:background="@drawable/default_circle_button_bg"
                     android:layout_height="48dp"
                     android:layout_gravity="center|end"
                     android:src="@drawable/edit_square" />
@@ -254,6 +254,7 @@
                     android:layout_marginTop="48dp"
                     android:text="Đăng xuất"
                     android:textSize="20sp"
+                    android:backgroundTint="#6D72FF"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.492"
                     app:layout_constraintStart_toStartOf="parent"

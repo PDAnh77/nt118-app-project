@@ -1,6 +1,7 @@
 package com.nhom22.studentmanagement.data.api;
 
 import com.nhom22.studentmanagement.data.model.Class;
+import com.nhom22.studentmanagement.data.model.StudentIdRequest;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface ClassApi {
     @POST("classes")
     Call<Class> createClass(@Body Class newClass);
     @POST("classes/{classIdentifier}/student")
-    Call<Void> addStudentToClass(@Path("identifier") String classIdentifier, @Path("studentId") String studentId);
+    Call<Class> addStudentToClass(@Path("classIdentifier") String classIdentifier, @Body StudentIdRequest request);
     @PUT("classes/{identifier}")
     Call<Class> updateClass(@Path("identifier") String classIdentifier, @Body Class updatedClass);
     @DELETE("classes/{classIdentifier}")

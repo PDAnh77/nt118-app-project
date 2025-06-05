@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".SearchActivity"
     android:id="@+id/main"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +20,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/notification_card_bg">
 
             <EditText
                 android:id="@+id/search_input"
@@ -40,7 +42,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/search"
-                android:background="@drawable/notification_circle_button_bg"
+                android:background="@drawable/default_circle_button_bg"
                 android:contentDescription="Search" />
         </LinearLayout>
 
@@ -60,7 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/notification_card_bg"/>
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
