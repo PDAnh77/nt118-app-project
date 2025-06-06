@@ -18,7 +18,7 @@ public interface AcademicTranscriptApi {
     @GET("grades/{id}")
     Call<AcademicTranscript> getAcademicTranscriptById(@Path("id") String transcriptId);
     @GET("grades/class/{identifier}")
-    Call<List<AcademicTranscript>> getAcademicTranscriptsByClassIdentifier(@Path("userId") String userId);
+    Call<List<AcademicTranscript>> getAcademicTranscriptsByClassIdentifier(@Path("identifier") String classIdentifier);
     @GET("grades/student/{studentId}")
     Call<List<AcademicTranscript>> getAcademicTranscriptsByStudentId(@Path("studentId") String studentId);
     @GET("grades/student/{studentId}/class/{identifier}")

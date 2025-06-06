@@ -1,5 +1,6 @@
 package com.nhom22.studentmanagement;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nhom22.studentmanagement.data.ApiClient;
 import com.nhom22.studentmanagement.data.api.ClassApi;
+import com.nhom22.studentmanagement.data.api.UserApi;
 import com.nhom22.studentmanagement.data.model.AcademicTranscript;
 import com.nhom22.studentmanagement.data.model.Grade;
 import com.nhom22.studentmanagement.data.model.Class;
+import com.nhom22.studentmanagement.data.model.User;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,9 +27,12 @@ import retrofit2.Response;
 public class AcademicTranscriptAdapter extends RecyclerView.Adapter<AcademicTranscriptAdapter.AcademicTranscriptHolder> {
     private List<AcademicTranscript> transcriptList;
     ClassApi classApi = ApiClient.getClient().create(ClassApi.class);
+    UserApi userApi = ApiClient.getClient().create(UserApi.class);
+    String type = null;
 
-    public AcademicTranscriptAdapter(List<AcademicTranscript> transcriptList) {
+    public AcademicTranscriptAdapter(List<AcademicTranscript> transcriptList, String type) {
         this.transcriptList = transcriptList;
+        this.type = type;
     }
 
     @NonNull
@@ -47,24 +54,45 @@ public class AcademicTranscriptAdapter extends RecyclerView.Adapter<AcademicTran
         Double average = grade.getAverageGrade();
         holder.tvDiemTB.setText(average != null ? String.format("%.2f", average) : "0.00");
 
-        // Gọi API để lấy tên lớp dựa trên classId
-        Call<Class> classCall = classApi.getClassByIdentifier(transcript.getClassId());
-        classCall.enqueue(new Callback<>() {
-            @Override
-            public void onResponse(Call<Class> call, Response<Class> response) {
-                if (response.isSuccessful()) {
-                    Class classFound = response.body();
-                    if (classFound != null) {
-                        holder.tvMaLop.setText(classFound.getClassCode());
+
+        if (type.equals("class")) {
+            // Gọi API để lấy tên lớp dựa trên classId
+            Call<Class> classCall = classApi.getClassByIdentifier(transcript.getClassId());
+            classCall.enqueue(new Callback<>() {
+                @Override
+                public void onResponse(Call<Class> call, Response<Class> response) {
+                    if (response.isSuccessful()) {
+                        Class classFound = response.body();
+                        if (classFound != null) {
+                            holder.tvMaLop.setText(classFound.getClassCode());
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Class> call, Throwable t) {
-                // Xử lý lỗi nếu có
-            }
-        });
+                @Override
+                public void onFailure(Call<Class> call, Throwable t) {
+                   Log.d("ClassAPI", "Lỗi lấy thông tin lớp", t);
+                }
+            });
+        } else if (Objects.equals(type, "student")) {
+            Call<User> getUserInfo = userApi.getUserById(transcript.getStudentId());
+            getUserInfo.enqueue(new Callback<>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.isSuccessful()) {
+                        User user = response.body();
+                        if (user != null) {
+                            holder.tvMaLop.setText(user.getUsername());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Log.d("UserAPI", "Lỗi lấy thông tin người dùng", t);
+                }
+            });
+        }
     }
 
     @Override

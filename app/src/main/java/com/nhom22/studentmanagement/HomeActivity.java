@@ -21,10 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.nhom22.studentmanagement.data.ApiClient;
 import com.nhom22.studentmanagement.data.api.ClassApi;
 import com.nhom22.studentmanagement.data.api.NotificationApi;
 import com.nhom22.studentmanagement.data.api.UserApi;
+import com.nhom22.studentmanagement.data.api.AcademicTranscriptApi;
+import com.nhom22.studentmanagement.data.model.AcademicTranscript;
+import com.nhom22.studentmanagement.data.model.Grade;
 import com.nhom22.studentmanagement.data.model.Notification;
 import com.nhom22.studentmanagement.data.model.StudentIdRequest;
 import com.nhom22.studentmanagement.data.model.User;
@@ -41,8 +45,9 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity {
     UserApi userApi = ApiClient.getClient().create(UserApi.class);
     ClassApi classApi = ApiClient.getClient().create(ClassApi.class);
-    private NotificationAdapter adapter;
     NotificationApi notificationApi = ApiClient.getClient().create(NotificationApi.class);
+    AcademicTranscriptApi transcriptApi = ApiClient.getClient().create(AcademicTranscriptApi.class);
+    private NotificationAdapter adapter;
     String currentUserId = null;
     String currentUserRole = null;
 
@@ -126,8 +131,8 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         });
 
-        Call<List<Class>> joinedClasses = classApi.getClassesByUserId(currentUserId);
-        joinedClasses.enqueue(new Callback<>() {
+        Call<List<Class>> relatedClasses = classApi.getClassesByUserId(currentUserId);
+        relatedClasses.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
                 RecyclerView classesRecyclerView = findViewById(R.id.class_list);
@@ -197,6 +202,27 @@ public class HomeActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(Call<Class> call, Throwable t) {
                                     Log.e("JoinClass", "Error: " + t.getMessage());
+                                }
+                            });
+
+                            AcademicTranscript newGrade = new AcademicTranscript(notification.getStudentId(), notification.getClassId());
+                            Log.d("CreateGrade", "New grade: " + newGrade.getStudentId() + ", " + newGrade.getClassId());
+                            Call<AcademicTranscript> createGrade = transcriptApi.createAcademicTranscript(newGrade);
+                            Gson gson = new Gson();
+                            Log.d("CreateGrade", "Sending JSON: " + gson.toJson(newGrade));
+                            createGrade.enqueue(new Callback<>() {
+                                @Override
+                                public void onResponse(Call<AcademicTranscript> call, Response<AcademicTranscript> response) {
+                                    if (response.isSuccessful()) {
+                                        Log.d("CreateGrade", "Grade created successfully: " + response.body().getId());
+                                    } else {
+                                        Log.e("CreateGrade", "Failed: " + response.code() + " - " + response.body());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<AcademicTranscript> call, Throwable t) {
+                                    Log.e("AcademicTranscriptApi", "Error: " + t.getMessage());
                                 }
                             });
                             adapter.removeNotification(notification);

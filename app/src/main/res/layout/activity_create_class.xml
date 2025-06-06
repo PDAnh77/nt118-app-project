@@ -52,6 +52,7 @@
                 android:layout_marginTop="44dp"
                 android:background="@drawable/edittext_bkg"
                 android:hint="Mã lớp"
+                android:textSize="24sp"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp">
 
@@ -63,6 +64,7 @@
                 android:layout_height="60dp"
                 android:background="@drawable/edittext_bkg"
                 android:hint="Tên lớp"
+                android:textSize="24sp"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
                 android:layout_marginBottom="20dp">
@@ -77,6 +79,7 @@
                 android:hint="Mô tả"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
+                android:textSize="24sp"
                 android:layout_marginBottom="20dp">
 
             </EditText>
@@ -86,7 +89,7 @@
                 android:layout_width="260dp"
                 android:layout_height="64dp"
                 android:text="Xác nhận"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:backgroundTint="#6D72FF"
                 android:layout_gravity="center_horizontal"/>
 
