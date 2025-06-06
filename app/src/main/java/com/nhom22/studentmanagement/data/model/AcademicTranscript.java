@@ -1,10 +1,18 @@
 package com.nhom22.studentmanagement.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class AcademicTranscript {
+    @SerializedName("_id")
     private String id;
     private String studentId;
     private String classId;
     private Grade grade;
+
+    public  AcademicTranscript(String studentId, String classId) {
+        this.studentId = studentId;
+        this.classId = classId;
+    }
 
     public AcademicTranscript(String studentId, String classId, Grade grade) {
         this.studentId = studentId;
