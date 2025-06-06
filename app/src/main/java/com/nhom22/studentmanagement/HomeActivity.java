@@ -215,6 +215,7 @@ public class HomeActivity extends AppCompatActivity {
                                 public void onResponse(Call<AcademicTranscript> call, Response<AcademicTranscript> response) {
                                     if (response.isSuccessful()) {
                                         Log.d("CreateGrade", "Grade created successfully: " + response.body().getId());
+                                        adapter.removeNotification(notification);
                                     } else {
                                         Log.e("CreateGrade", "Failed: " + response.code() + " - " + response.body());
                                     }
@@ -225,7 +226,6 @@ public class HomeActivity extends AppCompatActivity {
                                     Log.e("AcademicTranscriptApi", "Error: " + t.getMessage());
                                 }
                             });
-                            adapter.removeNotification(notification);
                         }
 
                         @Override
